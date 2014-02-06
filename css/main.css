@@ -1,0 +1,19 @@
+* {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+h4,h6 {
+	font-weight: normal;
+	margin: 0;
+}
+
+ul.plain,
+ul.plain li {
+	list-style-type: none;
+	margin: 0 0 15px;
+	padding: 0;
+}
+
+.results h4 {
+	
+}

@@ -1,13 +1,17 @@
-<doctype html>
+<!doctype html>
 <html>
 <head>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 	<script src="//connect.soundcloud.com/sdk.js"></script>
-	<script src="js/soundcloud.js"></script>
+	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<form>
-		<input type="text" class="query" />
-	</form>
+	<input type="text" class="query" />
+	<div class="results">
+		<ul class="plain soundcloud-list"></ul>
+		<ul class="plain spotify-list"></ul>
+		<ul class="plain lastfm-list"></ul>
+	</div>
+	<script src="js/main.js"></script>
 </body>
 </html>

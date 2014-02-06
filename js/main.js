@@ -9,17 +9,17 @@
 
 		function _getResults(query) {
 			var promise = new Promise(function(resolve, reject){
-				// SC.get('/tracks', { q: query }, function(tracks) {
-				// 	resolve(tracks || null);
-				// });
-				resolve(true);
+				SC.get('/tracks', { q: query }, function(tracks) {
+					resolve(tracks || null);
+				});
+				// resolve(true);
 			});
 			return promise;
 		}
 
 		function _renderResults(results) {
 			results.map(function(track){
-
+				
 			})
 		}
 

@@ -12,15 +12,15 @@
 				SC.get('/tracks', { q: query }, function(tracks) {
 					resolve(tracks || null);
 				});
-				// resolve(true);
 			});
 			return promise;
 		}
 
 		function _renderResults(results) {
-			results.map(function(track){
-				
-			})
+			return results.map(function(track){
+				console.log(track);
+				return '<li><h4>'+unescape(track.title)+'</h4><h6>Downloaded: '+track.download_count+'</h6><h6>Favorited: '+track.favoritings_count+'</h6></li>';
+			}).join('');
 		}
 
 		this.getResults = _getResults;
@@ -43,8 +43,7 @@
 				_request.onerror = function(obj) {
 					reject(obj);
 				};
-				resolve(true);
-				// _request.send();
+				_request.send();
 			});
 			return promise;
 		}
@@ -113,9 +112,9 @@
 	}
 
 	function _renderResults(results) {
-		// document.querySelector('.soundcloud-list').innerHTML = oSoundcloud.renderResults(results.soundcloud);
+		document.querySelector('.soundcloud-list').innerHTML = oSoundcloud.renderResults(results.soundcloud);
 		// document.querySelector('.spotify-list').innerHTML = oSpotify.renderResults(results.spotify);
-		document.querySelector('.lastfm-list').innerHTML = oLastFM.renderResults(results.lastfm);
+		// document.querySelector('.lastfm-list').innerHTML = oLastFM.renderResults(results.lastfm);
 	}
 
 	function _search(q) {

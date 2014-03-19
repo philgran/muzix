@@ -2,10 +2,17 @@
 	font-family: Helvetica, Arial, sans-serif;
 }
 
-h4,h6 {
+h4,h5,h6 {
 	font-weight: normal;
 	margin: 0;
 }
+
+/*h4:before {
+	content: 'Artist: ';
+}
+h5:before {
+	content: 'Track: ';
+}*/
 
 ul.plain,
 ul.plain li {

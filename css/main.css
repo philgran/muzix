@@ -24,3 +24,8 @@ ul.plain li {
 .results h4 {
 	
 }
+
+.col {
+	float: left;
+	width: 33%;
+}

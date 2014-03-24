@@ -18,7 +18,6 @@
 
 		function _renderResults(results) {
 			return results.map(function(track){
-				console.log(track);
 				return '<li><h4>'+unescape(track.title)+'</h4><h6>Downloaded: '+track.download_count+'</h6><h6>Favorited: '+track.favoritings_count+'</h6></li>';
 			}).join('');
 		}
@@ -49,7 +48,27 @@
 		}
 
 		function _renderResults(results) {
-			// generate html
+			var html = _.template(
+				'<li>'+
+					'<h4><%= a %></h4>'+
+					'<h6><%= t %></h6>'+
+					'<h6>Popularity: <%= p %></h6>'+
+				'</li>');
+			var tracks = results.tracks;
+			var output = tracks.map(function(track){
+				var popularity = track.popularity;
+				var artists = track.artists.map(function(artist){
+					return artist.name;
+				});
+				if (popularity < 0.1) { return null; }
+				return html({
+					a: artists.join(", "),
+					t: track.name,
+					p: popularity
+				});
+			});
+
+			return _.compact(output).join('');
 		}
 
 		this.getResults = _getResults;
@@ -113,8 +132,8 @@
 
 	function _renderResults(results) {
 		document.querySelector('.soundcloud-list').innerHTML = oSoundcloud.renderResults(results.soundcloud);
-		// document.querySelector('.spotify-list').innerHTML = oSpotify.renderResults(results.spotify);
-		// document.querySelector('.lastfm-list').innerHTML = oLastFM.renderResults(results.lastfm);
+		document.querySelector('.spotify-list').innerHTML = oSpotify.renderResults(results.spotify);
+		document.querySelector('.lastfm-list').innerHTML = oLastFM.renderResults(results.lastfm);
 	}
 
 	function _search(q) {

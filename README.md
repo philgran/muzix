@@ -12,3 +12,6 @@ Track search will return results from:
 Soundcloud
 Spotify
 (any other service that returns only tracks)
+
+TODO: 
+Make results easier to read

@@ -107,9 +107,6 @@
 		this.renderResults = _renderResults;
 	};
 
-	var Bandcamp = function() {
-
-	};
 
 	// MODULES ABOVE HERE
 
@@ -131,13 +128,31 @@
 		});
 	}
 
-	function _renderResults(results) {
+	function _renderAllResults(results) {
 		document.querySelector('.soundcloud-list').innerHTML = oSoundcloud.renderResults(results.soundcloud);
 		document.querySelector('.spotify-list').innerHTML = oSpotify.renderResults(results.spotify);
 		document.querySelector('.lastfm-list').innerHTML = oLastFM.renderResults(results.lastfm);
 	}
 
+	// Render results as soon as API call finishes (race 'em)
 	function _search(q) {
+		var query = escape(q);
+
+		oSoundcloud.getResults(query).then(function(results){
+			document.querySelector('.soundcloud-list').innerHTML = oSoundcloud.renderResults(results);
+		});
+		oSpotify.getResults(query).then(function(results){
+			document.querySelector('.spotify-list').innerHTML = oSpotify.renderResults(results);
+		});
+		oLastFM.getResults(query).then(function(results){
+			document.querySelector('.lastfm-list').innerHTML = oLastFM.renderResults(results);
+		});
+	}
+
+	// This will render all results at once
+	// Waits for all API calls to finish, 
+	// so it's only as fast as the slowest call
+	function _searchAll(q) {
 		var query = escape(q);
 		var promises = [
 			oSoundcloud.getResults(query),
@@ -147,7 +162,7 @@
 
 		Promise.all(promises).then(function(result){
 			console.log(result);
-			_renderResults({
+			_renderAllResults({
 				soundcloud: result[0],
 				spotify: result[1],
 				lastfm: result[2]

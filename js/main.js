@@ -119,6 +119,7 @@
 
 	function _init() {
 		_bindEvents();
+		document.querySelector('input.query').focus();
 	}
 
 	function _bindEvents() {

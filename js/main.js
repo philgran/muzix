@@ -11,6 +11,7 @@
 			var promise = new Promise(function(resolve, reject){
 				SC.get('/tracks', { q: query }, function(tracks) {
 					resolve(tracks || null);
+					console.log('Soundcloud: ', tracks);
 				});
 			});
 			return promise;
@@ -38,6 +39,7 @@
 				_request.onload = function() {
 					var data = JSON.parse(_request.responseText) || null;
 					resolve(data);
+					console.log('Spotify: ', data);
 				};
 				_request.onerror = function(obj) {
 					reject(obj);
@@ -80,12 +82,14 @@
 
 		function _getResults(query) {
 			var promise = new Promise(function(resolve, reject){
-				var url = 'http://ws.audioscrobbler.com/2.0/?method=artist.search&artist='+query+'&api_key=0d0c017a1e01dfd2284a60c5ccbf565a&format=json';
+				var key = '0d0c017a1e01dfd2284a60c5ccbf565a';
+				var url = 'http://ws.audioscrobbler.com/2.0/?method=artist.search&artist='+query+'&api_key='+key+'&format=json';
 				
 				_request.open('GET', url, true);
 				_request.onload = function(obj) {
 					var data = JSON.parse(_request.responseText) || null;
 					resolve(data);
+					console.log('LastFM: ', data);
 				};
 				_request.onerror = function(obj) {
 					reject(obj);
@@ -106,6 +110,28 @@
 		this.getResults = _getResults;
 		this.renderResults = _renderResults;
 	};
+
+	var iTunes = function() {
+		var _request = new XMLHttpRequest();
+
+		function _getResults(query) {
+			var promise = new Promise(function(resolve, reject){
+				var url = 'https://itunes.apple.com/search?term='+query;
+			});
+		}
+	};
+
+	// These fuckers only let you make 1000 lookups for free. wtf is that.
+	// var OneMusicAPI = function() {
+	// 	var _request = new XMLHttpRequest();
+
+	// 	function _getResults(query) {
+	// 		var promise = new Promise(function(resolve, reject){
+	// 			var key = '08c3c04e283c04a736dfaa532bab5c2d';
+	// 			var url = 'http://api.onemusicapi.com/20131025/release?artist='+query+'&user_key='+key;
+	// 		});
+	// 	}
+	// }
 
 
 	// MODULES ABOVE HERE

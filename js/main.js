@@ -116,9 +116,28 @@
 
 		function _getResults(query) {
 			var promise = new Promise(function(resolve, reject){
-				var url = 'https://itunes.apple.com/search?term='+query;
+				var url = 'http://itunes.apple.com/search?term='+query;
+
+				_request.open('GET', url, true);
+				_request.onload = function(obj) {
+					var data = JSON.parse(_request.responseText) || null;
+					resolve(data);
+					console.log('iTunes: ', data);
+				};
+				_request.onerror = function(obj) {
+					reject(obj);
+				};
+				_request.send();
 			});
+			return promise;
 		}
+
+		function _renderResults(results) {
+
+		}
+
+		this.getResults = _getResults;
+		this.renderResults = _renderResults;
 	};
 
 	// These fuckers only let you make 1000 lookups for free. wtf is that.
@@ -139,6 +158,7 @@
 	var oSoundcloud = new Soundcloud();
 	var oSpotify = new Spotify();
 	var oLastFM = new LastFM();
+	var oiTunes = new iTunes();
 
 	function _init() {
 		_bindEvents();
@@ -158,6 +178,7 @@
 		document.querySelector('.soundcloud-list').innerHTML = oSoundcloud.renderResults(results.soundcloud);
 		document.querySelector('.spotify-list').innerHTML = oSpotify.renderResults(results.spotify);
 		document.querySelector('.lastfm-list').innerHTML = oLastFM.renderResults(results.lastfm);
+		document.querySelector('.itunes-list').innerHTML = oiTunes.renderResults(results.itunes);
 	}
 
 	// Render results as soon as API call finishes (race 'em)
@@ -173,6 +194,9 @@
 		oLastFM.getResults(query).then(function(results){
 			document.querySelector('.lastfm-list').innerHTML = oLastFM.renderResults(results);
 		});
+		oiTunes.getResults(query).then(function(results){
+			document.querySelector('.itunes-list').innerHTML = oiTunes.renderResults(results);
+		});
 	}
 
 	// This will render all results at once
@@ -183,7 +207,8 @@
 		var promises = [
 			oSoundcloud.getResults(query),
 			oSpotify.getResults(query), 
-			oLastFM.getResults(query)
+			oLastFM.getResults(query),
+			oiTunes.getResults(query)
 		];
 
 		Promise.all(promises).then(function(result){
@@ -191,12 +216,15 @@
 			_renderAllResults({
 				soundcloud: result[0],
 				spotify: result[1],
-				lastfm: result[2]
+				lastfm: result[2],
+				itunes: result[3]
 			});
+			// Don't really need this return yet...
 			return {
 				soundcloud: result[0],
 				spotify: result[1],
-				lastfm: result[2]
+				lastfm: result[2],
+				itunes: result[3]
 			};
 		});
 	}
